@@ -1,0 +1,55 @@
+version: '2'
+
+services :
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    restart: always
+    links:
+      - php
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php
+    volumes_from:
+      - php
+    ports:
+      - 80:80
+      - 443:443
+
+  php:
+    build:
+      context: ./php
+    container_name: php7
+    restart: always
+    volumes:
+      - ./nginx/public_html:/var/www/html
+      - ~/Projects:/var/www
+    depends_on:
+      - mariadb
+      - mongodb
+    links:
+      - mariadb
+      - mongodb
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: always
+    volumes:
+      - ./mariadb/db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - 3306:3306
+
+  mongodb:
+    image: mongo:latest
+    command: -smallfiles -nojournal
+    container_name: mongodb
+    restart: always
+    volumes:
+      - ./mongodb/db-data:/var/lib/mongodb
+    ports:
+      - 27017:27017

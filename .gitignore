@@ -1,0 +1,10 @@
+mariadb/db-data/*
+!mariadb/db-data/.gitkeep
+
+mongodb/db-data/*
+!mongodb/db-data/.gitkeep
+
+nginx/conf.d/*
+!nginx/conf.d/default.conf
+
+nginx/public_html/*
