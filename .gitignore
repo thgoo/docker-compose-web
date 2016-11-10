@@ -8,3 +8,4 @@ nginx/conf.d/*
 !nginx/conf.d/default.conf
 
 nginx/public_html/*
+!nginx/public_html/.gitkeep
