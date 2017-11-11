@@ -38,17 +38,13 @@ services :
     networks:
         lan_0:
             ipv4_address: 172.19.0.23
-    extra_hosts:
-            - "local.diamanteslingerie.com.br:172.19.0.22"
     volumes:
       - ./nginx/public_html:/var/www/html
       - ~/Projects:/var/www
     depends_on:
       - mariadb
-      - mongodb
     links:
       - mariadb
-      - mongodb
 
   mariadb:
     image: mariadb:latest
@@ -63,16 +59,3 @@ services :
       - MYSQL_ROOT_PASSWORD=secret
     ports:
       - 3306:3306
-
-  mongodb:
-   image: mongo:latest
-   command: -smallfiles -nojournal
-   container_name: mongodb
-   restart: always
-   networks:
-        lan_0:
-            ipv4_address: 172.19.0.25
-   volumes:
-     - ./mongodb/db-data:/var/lib/mongodb
-   ports:
-     - 27017:27017
